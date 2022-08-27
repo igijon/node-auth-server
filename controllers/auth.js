@@ -1,5 +1,6 @@
 const { response } = require('express');
 const Usuario = require('../models/Usuario');
+const bcrypt = require('bcryptjs');
 
 const crearUsuario = async (req, res = response) => {
 
@@ -20,6 +21,8 @@ const crearUsuario = async (req, res = response) => {
         const dbUser = new Usuario(req.body);
 
         //Hashear la contrseña
+        const salt = bcrypt.genSaltSync();
+        dbUser.password = await bcrypt.hash(password, salt);
 
         //Generar el JWT
 
